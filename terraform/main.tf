@@ -32,12 +32,11 @@ resource "aws_s3_bucket" "lambda_bucket" {
 }
 
 
-resource "aws_lambda_function" "my_lambda" {
-  function_name = "MyLambdaFunction"
-  s3_bucket     = aws_s3_bucket.lambda_bucket.id
-  s3_key        = "lambda_function.zip"
-  runtime       = "python3.8"
-  handler       = "index.lambda_handler"
-  role          = aws_iam_role.lambda_role.arn
+resource "aws_s3_object" "lambda_zip" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+  key    = "lambda_function.zip"
+  source = "../lambda/lambda_function.zip"
+  etag   = filemd5("../lambda/lambda_function.zip")
+  depends_on = [aws_s3_bucket.lambda_bucket]  # Ensures the bucket is created first
 }
 
