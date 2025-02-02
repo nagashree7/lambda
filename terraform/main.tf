@@ -37,6 +37,6 @@ resource "aws_s3_object" "lambda_zip" {
   key    = "lambda_function.zip"
   source = "../lambda/lambda_function.zip"
   etag   = filemd5("../lambda/lambda_function.zip")
-  depends_on = [aws_s3_bucket.lambda_bucket]  # Ensures the bucket is created first
+  depends_on = [aws_s3_bucket.lambda_bucket]  # Ensures the bucket is created first 
 }
 
