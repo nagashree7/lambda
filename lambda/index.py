@@ -3,5 +3,5 @@ import json
 def lambda_handler(event, context):
     return {
         "statusCode": 200,
-        "body": json.dumps({"message": "Hello from Lambda!"})
+        "body": json.dumps({"message": "Hello, This is an example of lambda function!"})
     }
