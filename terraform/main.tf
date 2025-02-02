@@ -92,10 +92,20 @@ resource "aws_lambda_permission" "lambda_permission" {
   function_name = aws_lambda_function.my_lambda.function_name
 }
 
-# API Gateway Deployment Stage
+# API Gateway Deployment (Removed stage_name)
 resource "aws_api_gateway_deployment" "api_deployment" {
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = "dev"  # You can name it 'dev', 'prod', etc.
+ 
 
-  depends_on = [aws_api_gateway_integration.integration]  # Ensure integration is created first
+  depends_on = [
+    aws_api_gateway_integration.integration,  # Ensure integration is created first
+    aws_lambda_permission.lambda_permission  # Ensure permission is granted first
+  ]
+}
+
+# API Gateway Stage (Created separately)
+resource "aws_api_gateway_stage" "api_stage" {
+  stage_name  = "dev"  # You can name it 'dev', 'prod', etc.
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  deployment_id = aws_api_gateway_deployment.api_deployment.id
 }
